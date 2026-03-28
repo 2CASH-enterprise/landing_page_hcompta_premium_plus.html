@@ -1,0 +1,2203 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>H-Compta AI — Espace PME Premium+</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* ============================================================
+       DESIGN SYSTEM — LUXURY PREMIUM GREEN
+       H-Compta AI · Espace PME
+       Charte : #2E8269 principal · #98CBB5 aqua · #FFD540 accent
+    ============================================================ */
+    :root {
+      /* Green palette — premium, non-saturé */
+      --forest-900: #0D2B22;
+      --forest-800: #143D2F;
+      --forest-700: #1A5C45;
+      --forest-600: #236B51;
+      --forest-500: #2E8269;  /* Vert H-Compta officiel */
+      --forest-400: #3EA082;
+      --forest-300: #98CBB5;  /* Vert clair officiel */
+      --forest-200: #C5DED6;
+      --forest-100: #E5F4EE;  /* Vert aqua officiel */
+      --forest-50:  #F2FAF6;
+
+      /* Gold accent officiel */
+      --gold:       #FFD540;
+      --gold-dark:  #E6BB1A;
+      --gold-soft:  #FFF8D6;
+
+      /* Warm neutrals */
+      --ink-900:    #1A2820;
+      --ink-700:    #334A40;
+      --ink-500:    #5C7269;
+      --ink-300:    #A8BDB5;
+      --ink-100:    #EBF1EE;
+      --ivory:      #F7FAF8;
+      --white:      #FFFFFF;
+
+      /* Semantic */
+      --success:      #059669;
+      --success-soft: #D1FAE5;
+      --warning:      #D97706;
+      --warning-soft: #FEF3C7;
+      --danger:       #DC2626;
+      --danger-soft:  #FEE2E2;
+
+      /* Surfaces */
+      --bg:     #F4F8F5;
+      --surface: var(--white);
+      --border:  #DDE8E2;
+      --border-subtle: #EDF3EF;
+
+      /* Shadows — verdâtres subtils */
+      --shadow-xs: 0 1px 4px rgba(13,43,34,.06);
+      --shadow-sm: 0 4px 14px rgba(13,43,34,.08);
+      --shadow-md: 0 10px 30px rgba(13,43,34,.10);
+      --shadow-lg: 0 20px 60px rgba(13,43,34,.14);
+
+      /* Radius */
+      --r-sm: 10px;
+      --r-md: 16px;
+      --r-lg: 22px;
+      --r-xl: 28px;
+
+      /* Typography */
+      --font-display: 'Sora', system-ui, sans-serif;
+      --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
+
+      /* Sidebar */
+      --sidebar-w: 264px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--ink-900);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
+    input, select, textarea { font: inherit; }
+
+    /* ===== LAYOUT ===== */
+    .layout { display: flex; min-height: 100vh; }
+    .main-wrap { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: var(--sidebar-w);
+      position: fixed; left: 0; top: 0; bottom: 0;
+      display: flex; flex-direction: column;
+      background: var(--forest-900);
+      z-index: 100; overflow: hidden;
+    }
+    /* Texture subtile */
+    .sidebar::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse 140% 60% at 50% 0%, rgba(46,130,105,.35), transparent),
+        radial-gradient(ellipse 80% 40% at 100% 100%, rgba(152,203,181,.12), transparent);
+      pointer-events: none;
+    }
+
+    .sidebar-header {
+      padding: 20px 18px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      flex-shrink: 0; position: relative;
+    }
+    .sidebar-logo { display: flex; align-items: center; gap: 11px; }
+    .sidebar-logo-mark {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--forest-400), var(--forest-300));
+      display: grid; place-items: center;
+      font-family: var(--font-display); font-size: 20px; font-weight: 800;
+      color: var(--forest-900);
+      box-shadow: 0 4px 14px rgba(46,130,105,.4);
+      flex-shrink: 0;
+    }
+    .sidebar-logo-name { font-size: 15px; font-weight: 800; color: var(--white); letter-spacing: -.01em; }
+    .sidebar-logo-sub { font-size: 11px; color: rgba(255,255,255,.4); font-weight: 500; margin-top: 2px; }
+
+    /* User card */
+    .sidebar-user {
+      margin: 14px 14px 0;
+      padding: 12px 14px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: var(--r-md);
+      display: none; align-items: center; gap: 10px;
+      position: relative;
+    }
+    .user-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      display: grid; place-items: center;
+      font-size: 14px; font-weight: 800; color: var(--forest-900);
+      flex-shrink: 0;
+    }
+    .user-info { flex: 1; min-width: 0; }
+    .user-name { font-size: 13px; font-weight: 700; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-plan { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 1px; }
+    .user-online { width: 8px; height: 8px; border-radius: 50%; background: #34D399; box-shadow: 0 0 0 2px rgba(52,211,153,.25); flex-shrink: 0; }
+
+    /* NAV */
+    .sidebar-nav { flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 1px; position: relative; }
+    .sidebar-nav::-webkit-scrollbar { width: 3px; }
+    .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
+
+    .nav-group-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+      color: rgba(255,255,255,.22); padding: 12px 10px 6px; margin-top: 4px;
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 11px; border-radius: var(--r-sm);
+      cursor: pointer; transition: all .15s;
+      color: rgba(255,255,255,.5); font-size: 13.5px; font-weight: 500;
+      position: relative;
+    }
+    .nav-item:hover { background: rgba(255,255,255,.08); color: rgba(255,255,255,.85); }
+    .nav-item.active {
+      background: rgba(152,203,181,.15);
+      color: var(--white); font-weight: 600;
+    }
+    .nav-item.active::before {
+      content: '';
+      position: absolute; left: -12px; top: 50%; transform: translateY(-50%);
+      width: 3px; height: 20px; border-radius: 0 3px 3px 0;
+      background: var(--forest-300);
+    }
+    .nav-icon { width: 20px; text-align: center; font-size: 15px; flex-shrink: 0; }
+    .nav-label { flex: 1; }
+    .nav-badge {
+      font-size: 10px; font-weight: 800;
+      background: rgba(255,255,255,.1); color: rgba(255,255,255,.55);
+      padding: 2px 7px; border-radius: 999px;
+    }
+    .nav-badge.alert { background: var(--danger); color: #fff; }
+    .nav-badge.gold { background: var(--gold); color: var(--forest-900); }
+    .nav-item-logout {
+      margin-top: 4px; color: rgba(255,100,100,.65);
+    }
+    .nav-item-logout:hover { background: rgba(220,38,38,.12); color: rgba(255,120,120,.9); }
+
+    /* Sidebar footer */
+    .sidebar-footer {
+      padding: 12px 16px 18px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      flex-shrink: 0; position: relative;
+    }
+    .sidebar-footer-text { font-size: 11px; color: rgba(255,255,255,.25); text-align: center; line-height: 1.6; }
+
+    /* ===== TOPBAR ===== */
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 26px;
+      display: flex; align-items: center; gap: 14px;
+      height: 60px; flex-shrink: 0;
+      position: sticky; top: 0; z-index: 90;
+      box-shadow: var(--shadow-xs);
+    }
+    .topbar-left { flex: 1; min-width: 0; }
+    .topbar-greeting { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--forest-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .topbar-sub { font-size: 12px; color: var(--ink-500); font-weight: 500; margin-top: 1px; }
+    .topbar-right { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+
+    .topbar-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 999px;
+      background: var(--forest-100); color: var(--forest-600);
+      font-size: 12px; font-weight: 700;
+      border: 1px solid rgba(46,130,105,.15);
+    }
+
+    .topbar-icon-btn {
+      width: 36px; height: 36px; border-radius: var(--r-sm);
+      border: 1px solid var(--border); background: var(--surface);
+      display: grid; place-items: center; color: var(--ink-500);
+      transition: all .15s; position: relative;
+    }
+    .topbar-icon-btn:hover { background: var(--forest-50); border-color: var(--forest-300); color: var(--forest-600); }
+    .notif-dot { position: absolute; top: 7px; right: 7px; width: 7px; height: 7px; border-radius: 50%; background: var(--danger); border: 2px solid var(--surface); }
+
+    .upload-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 18px; border-radius: var(--r-sm);
+      background: linear-gradient(135deg, var(--forest-500), var(--forest-700));
+      color: var(--white); font-size: 13px; font-weight: 700;
+      box-shadow: 0 3px 12px rgba(46,130,105,.35);
+      transition: all .15s;
+    }
+    .upload-btn:hover { box-shadow: 0 6px 20px rgba(46,130,105,.45); transform: translateY(-1px); }
+
+    .conn-btn {
+      display: flex; align-items: center; gap: 7px;
+      padding: 8px 14px; border-radius: var(--r-sm);
+      font-size: 12.5px; font-weight: 700; transition: all .15s; cursor: pointer;
+    }
+    .conn-btn.on { background: var(--success-soft); color: var(--success); border: 1px solid rgba(5,150,105,.2); }
+    .conn-btn.on:hover { background: #BBF7D0; }
+    .conn-btn.off { background: var(--forest-700); color: var(--white); border: 1px solid var(--forest-600); box-shadow: 0 2px 8px rgba(13,43,34,.2); }
+    .conn-btn.off:hover { background: var(--forest-600); }
+    .conn-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .conn-dot.on { background: var(--success); }
+    .conn-dot.off { background: rgba(255,255,255,.45); }
+
+    /* ===== PAGE CONTENT ===== */
+    .page-content { flex: 1; padding: 22px 26px 32px; }
+    .page { display: none; }
+    .page.active { display: block; animation: pageIn .2s ease-out; }
+    @keyframes pageIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 9px 18px; border-radius: var(--r-sm);
+      font-size: 13px; font-weight: 700;
+      transition: all .15s; cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-green { background: linear-gradient(135deg, var(--forest-500), var(--forest-700)); color: var(--white); box-shadow: 0 2px 10px rgba(46,130,105,.3); }
+    .btn-green:hover { box-shadow: 0 4px 18px rgba(46,130,105,.4); }
+    .btn-outline { background: var(--surface); color: var(--ink-700); border: 1px solid var(--border); box-shadow: var(--shadow-xs); }
+    .btn-outline:hover { border-color: var(--forest-300); color: var(--forest-600); background: var(--forest-50); }
+    .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--forest-900); box-shadow: 0 2px 10px rgba(255,213,64,.3); }
+    .btn-warn { background: var(--warning-soft); color: var(--warning); }
+    .btn-danger { background: var(--danger-soft); color: var(--danger); }
+    .btn-success { background: var(--success-soft); color: var(--success); }
+    .btn-sm { padding: 6px 13px; font-size: 12px; border-radius: 8px; }
+    .btn-lg { padding: 13px 26px; font-size: 14px; }
+    .btn-full { width: 100%; justify-content: center; }
+
+    /* ===== KPI CARDS ===== */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-sm);
+      position: relative; overflow: hidden;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .kpi-card::after {
+      content: ''; position: absolute; right: -20px; top: -20px;
+      width: 90px; height: 90px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(46,130,105,.07), transparent 70%);
+      pointer-events: none;
+    }
+    .kpi-card.dark {
+      background: linear-gradient(135deg, var(--forest-800), var(--forest-700));
+      border-color: rgba(255,255,255,.08);
+    }
+    .kpi-card.dark::after { background: radial-gradient(circle, rgba(255,255,255,.06), transparent 70%); }
+    .kpi-card.gold-card {
+      background: linear-gradient(135deg, #1A1000, #2D1E00);
+      border-color: rgba(255,213,64,.2);
+    }
+    .kpi-eyebrow {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+      color: var(--ink-500); margin-bottom: 12px;
+    }
+    .kpi-card.dark .kpi-eyebrow, .kpi-card.gold-card .kpi-eyebrow { color: rgba(255,255,255,.45); }
+    .kpi-icon {
+      width: 26px; height: 26px; border-radius: 8px;
+      background: var(--forest-100); display: grid; place-items: center; font-size: 13px;
+    }
+    .kpi-card.dark .kpi-icon { background: rgba(255,255,255,.1); }
+    .kpi-card.gold-card .kpi-icon { background: rgba(255,213,64,.15); }
+    .kpi-value {
+      font-family: var(--font-display); font-size: 34px; font-weight: 700;
+      letter-spacing: -.02em; line-height: 1; color: var(--forest-900);
+      margin-bottom: 10px;
+    }
+    .kpi-card.dark .kpi-value, .kpi-card.gold-card .kpi-value { color: var(--white); }
+    .kpi-meta { font-size: 12px; font-weight: 600; color: var(--forest-500); display: flex; align-items: center; gap: 4px; }
+    .kpi-card.dark .kpi-meta { color: rgba(255,255,255,.45); }
+    .kpi-meta.up { color: var(--success); }
+    .kpi-meta.warn { color: var(--warning); }
+
+    /* ===== CARDS ===== */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .card-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--forest-900); letter-spacing: -.01em; }
+    .card-sub { font-size: 12px; color: var(--ink-500); margin-top: 2px; }
+    .card-body { padding: 18px 20px; }
+    .card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* Grids */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+
+    /* ===== TABLE ===== */
+    .table-wrap { overflow-x: auto; }
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th {
+      padding: 10px 14px; text-align: left;
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+      color: var(--ink-500); background: var(--forest-50);
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table td {
+      padding: 12px 14px; font-size: 13.5px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--ink-700);
+    }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .data-table tbody tr { transition: background .12s; }
+    .data-table tbody tr:hover td { background: var(--forest-50); }
+
+    /* ===== BADGES ===== */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 999px;
+      font-size: 11px; font-weight: 700;
+    }
+    .badge-green { background: var(--forest-100); color: var(--forest-600); }
+    .badge-success { background: var(--success-soft); color: var(--success); }
+    .badge-warning { background: var(--warning-soft); color: var(--warning); }
+    .badge-danger { background: var(--danger-soft); color: var(--danger); }
+    .badge-gold { background: var(--gold-soft); color: #92600A; }
+    .badge-ghost { background: var(--ink-100); color: var(--ink-500); }
+
+    /* ===== UPLOAD ZONE ===== */
+    .upload-drop {
+      border: 2px dashed var(--forest-200);
+      border-radius: var(--r-lg);
+      padding: 36px 24px; text-align: center;
+      background: var(--forest-50); cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .upload-drop:hover { border-color: var(--forest-400); background: var(--forest-100); }
+    .upload-drop-icon { font-size: 44px; margin-bottom: 12px; opacity: .7; }
+    .upload-drop-title { font-size: 16px; font-weight: 700; color: var(--forest-800); margin-bottom: 6px; }
+    .upload-drop-sub { font-size: 13px; color: var(--ink-500); }
+
+    /* ===== TIMELINE ===== */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-item {
+      display: flex; gap: 14px; padding: 13px 0;
+      border-bottom: 1px solid var(--border-subtle); position: relative;
+    }
+    .timeline-item:last-child { border-bottom: none; }
+    .timeline-dot {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--forest-100); display: grid; place-items: center;
+      font-size: 14px; flex-shrink: 0; margin-top: 2px;
+    }
+    .timeline-content { flex: 1; }
+    .timeline-title { font-size: 13.5px; font-weight: 600; color: var(--forest-900); margin-bottom: 3px; }
+    .timeline-time { font-size: 12px; color: var(--ink-500); }
+
+    /* ===== SECTION HEADER ===== */
+    .section-hd {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 14px; flex-wrap: wrap; margin-bottom: 16px;
+    }
+    .section-heading { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--forest-900); letter-spacing: -.01em; }
+    .section-sub { font-size: 13px; color: var(--ink-500); margin-top: 3px; }
+
+    /* ===== FORM ===== */
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 12px; font-weight: 700; color: var(--ink-700); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .04em; }
+    .form-input {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid var(--border); border-radius: var(--r-sm);
+      font-size: 14px; outline: none; transition: border-color .15s, box-shadow .15s;
+      background: var(--surface); color: var(--ink-900);
+    }
+    .form-input:focus { border-color: var(--forest-400); box-shadow: 0 0 0 3px rgba(46,130,105,.1); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* Toggle */
+    .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-subtle); }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-label { font-size: 13.5px; font-weight: 600; color: var(--ink-900); }
+    .toggle-sub { font-size: 12px; color: var(--ink-500); margin-top: 2px; }
+    .toggle { position: relative; width: 42px; height: 24px; background: var(--ink-300); border-radius: 999px; cursor: pointer; transition: background .2s; flex-shrink: 0; }
+    .toggle.on { background: var(--forest-500); }
+    .toggle::after { content: ''; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--white); transition: left .2s; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+    .toggle.on::after { left: 21px; }
+
+    /* ===== SPINNER ===== */
+    .spinner { display: inline-block; width: 15px; height: 15px; border: 2.5px solid var(--border); border-top-color: var(--forest-500); border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state { text-align: center; padding: 48px 20px; color: var(--ink-500); }
+    .empty-icon { font-size: 44px; margin-bottom: 14px; opacity: .5; }
+    .empty-title { font-family: var(--font-display); font-size: 17px; color: var(--ink-700); margin-bottom: 6px; }
+    .empty-desc { font-size: 13px; }
+
+    /* ===== TOAST ===== */
+    #toast {
+      position: fixed; bottom: 26px; right: 26px;
+      padding: 12px 20px; border-radius: var(--r-md);
+      font-size: 13.5px; font-weight: 700; color: var(--white);
+      background: var(--forest-800);
+      box-shadow: var(--shadow-lg);
+      opacity: 0; transition: opacity .25s, transform .25s;
+      pointer-events: none; z-index: 9999;
+      display: flex; align-items: center; gap: 9px;
+    }
+    #toast.show { opacity: 1; }
+    #toast.success { background: var(--success); }
+    #toast.error { background: var(--danger); }
+    #toast.warn { background: var(--warning); }
+
+    /* ===== AUTH MODAL ===== */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(10,30,20,.65); backdrop-filter: blur(10px);
+      z-index: 600; display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .auth-modal {
+      background: var(--white); border-radius: var(--r-xl);
+      width: 100%; max-width: 420px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      animation: pageIn .25s ease-out;
+    }
+    .auth-top {
+      background: linear-gradient(135deg, var(--forest-900), var(--forest-700));
+      padding: 32px 32px 28px; position: relative; overflow: hidden;
+    }
+    .auth-top::before {
+      content: '';
+      position: absolute; right: -40px; top: -40px;
+      width: 160px; height: 160px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(152,203,181,.2), transparent 70%);
+    }
+    .auth-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; position: relative; }
+    .auth-logo-mark {
+      width: 38px; height: 38px; border-radius: 11px;
+      background: linear-gradient(135deg, var(--forest-400), var(--forest-300));
+      display: grid; place-items: center;
+      font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--forest-900);
+    }
+    .auth-logo-name { font-size: 15px; font-weight: 800; color: var(--white); }
+    .auth-logo-sub { font-size: 11px; color: rgba(255,255,255,.4); }
+    .auth-title { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--white); margin-bottom: 6px; position: relative; }
+    .auth-sub { font-size: 13px; color: rgba(255,255,255,.5); position: relative; }
+    .auth-body { padding: 28px 32px 32px; }
+    .auth-error {
+      background: var(--danger-soft); border: 1px solid rgba(220,38,38,.2);
+      border-radius: var(--r-sm); padding: 10px 14px;
+      font-size: 13px; color: var(--danger); margin-bottom: 18px; display: none;
+    }
+
+    /* ===== PROGRESS BAR ===== */
+    .progress-track { height: 5px; background: var(--border); border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--forest-500), var(--forest-300)); }
+    .progress-fill.warn { background: linear-gradient(90deg, var(--warning), #FCD34D); }
+    .progress-fill.danger { background: linear-gradient(90deg, var(--danger), #F87171); }
+    .progress-fill.success { background: linear-gradient(90deg, var(--success), #34D399); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 900px) {
+      :root { --sidebar-w: 0px; }
+      .sidebar { transform: translateX(-100%); }
+      .main-wrap { margin-left: 0; }
+      .grid-2, .grid-3, .grid-4, .kpi-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== AUTH MODAL ===== -->
+<div class="modal-overlay open" id="auth-modal">
+  <div class="auth-modal">
+    <div class="auth-top">
+      <div class="auth-logo">
+        <div class="auth-logo-mark">H</div>
+        <div>
+          <div class="auth-logo-name">H-Compta AI</div>
+          <div class="auth-logo-sub">Espace PME Premium+</div>
+        </div>
+      </div>
+      <div class="auth-title">Connexion</div>
+      <div class="auth-sub">Accédez à votre comptabilité en temps réel</div>
+    </div>
+    <div class="auth-body">
+      <div class="auth-error" id="auth-error">Email non reconnu. Vérifiez vos informations.</div>
+      <div class="form-group">
+        <label class="form-label">Email de votre compte PME</label>
+        <input type="email" class="form-input" id="auth-email" placeholder="direction@entreprise.com" value="direction@cimenci.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nom de la société</label>
+        <input type="text" class="form-input" id="auth-company" placeholder="CimenCI SARL" value="CimenCI SARL">
+      </div>
+      <button class="btn btn-green btn-full btn-lg" style="margin-top:4px" onclick="doLogin()">
+        <span id="login-spinner" style="display:none" class="spinner" style="border-top-color:#fff"></span>
+        Accéder à mon espace →
+      </button>
+      <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--ink-500)">
+        Pas encore de compte ?
+        <a href="landing_page_hcompta.html" style="color:var(--forest-500);font-weight:700">Créer mon espace gratuit</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-mark">H</div>
+        <div>
+          <div class="sidebar-logo-name">H-Compta AI</div>
+          <div class="sidebar-logo-sub">Espace PME</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-user" id="sidebar-user">
+      <div class="user-avatar" id="user-avatar-sidebar">C</div>
+      <div class="user-info">
+        <div class="user-name" id="user-name-sidebar">CimenCI SARL</div>
+        <div class="user-plan" id="user-plan-sidebar">Plan PME · 25 000 FCFA/mois</div>
+      </div>
+      <div class="user-online"></div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-group-label">Principal</div>
+      <div class="nav-item active" data-page="accueil">
+        <span class="nav-icon">▦</span>
+        <span class="nav-label">Tableau de bord</span>
+        <span class="nav-badge gold">●</span>
+      </div>
+      <div class="nav-item" data-page="pieces">
+        <span class="nav-icon">📄</span>
+        <span class="nav-label">Pièces comptables</span>
+        <span class="nav-badge" id="badge-pieces">–</span>
+      </div>
+      <div class="nav-item" data-page="imputations">
+        <span class="nav-icon">✦</span>
+        <span class="nav-label">Imputations IA</span>
+        <span class="nav-badge" id="badge-imputations">–</span>
+      </div>
+      <div class="nav-item" data-page="alertes">
+        <span class="nav-icon">⚡</span>
+        <span class="nav-label">Alertes</span>
+        <span class="nav-badge alert" id="badge-alertes">–</span>
+      </div>
+
+      <div class="nav-group-label">Finance</div>
+      <div class="nav-item" data-page="reporting">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">Reporting</span>
+        <span class="nav-badge">→</span>
+      </div>
+      <div class="nav-item" data-page="tva">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label">TVA</span>
+        <span class="nav-badge">→</span>
+      </div>
+      <div class="nav-item" data-page="export">
+        <span class="nav-icon">↑</span>
+        <span class="nav-label">Export & ERP</span>
+        <span class="nav-badge">→</span>
+      </div>
+
+      <div class="nav-group-label">Compte</div>
+      <div class="nav-item" data-page="utilisateurs">
+        <span class="nav-icon">👥</span>
+        <span class="nav-label">Utilisateurs & accès</span>
+        <span class="nav-badge">4</span>
+      </div>
+      <div class="nav-item" data-page="abonnement">
+        <span class="nav-icon">💳</span>
+        <span class="nav-label">Mon abonnement</span>
+        <span class="nav-badge gold">J+12</span>
+      </div>
+      <div class="nav-item" data-page="parametres">
+        <span class="nav-icon">◈</span>
+        <span class="nav-label">Paramètres</span>
+      </div>
+      <div class="nav-item nav-item-logout" onclick="doLogout()">
+        <span class="nav-icon">↩</span>
+        <span class="nav-label">Se déconnecter</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-text">H-Compta AI · Plan PME<br>SYSCOHADA · Zone OHADA</div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <div class="main-wrap">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="topbar-greeting" id="topbar-greeting">Bonjour, CimenCI SARL 👋</div>
+        <div class="topbar-sub" id="topbar-sub">Votre comptabilité du mois pilotée en temps réel</div>
+      </div>
+      <div class="topbar-right">
+        <span class="topbar-badge" id="topbar-country">🇨🇮 Côte d'Ivoire · TVA 18%</span>
+        <span class="topbar-badge" id="topbar-plan">PME · 25 000 FCFA/mois</span>
+
+        <button class="topbar-icon-btn" onclick="showToast('Aucune notification', 'warn')" title="Notifications">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <div class="notif-dot"></div>
+        </button>
+
+        <button class="upload-btn" id="upload-piece-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Importer une pièce
+        </button>
+        <input type="file" id="fileInput" accept="application/pdf,image/*" style="display:none">
+
+        <button class="conn-btn" id="conn-btn" onclick="toggleConn()">
+          <div class="conn-dot on" id="conn-dot"></div>
+          <span id="conn-label">Connecté</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- PAGES -->
+    <div class="page-content">
+
+      <!-- ========== ACCUEIL ========== -->
+      <div class="page active" id="page-accueil">
+        <div class="kpi-grid">
+          <div class="kpi-card dark">
+            <div class="kpi-eyebrow"><div class="kpi-icon">📄</div>Factures traitées</div>
+            <div class="kpi-value" id="factures">–</div>
+            <div class="kpi-meta up">↑ +12% ce mois</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-eyebrow"><div class="kpi-icon">✦</div>Score confiance IA</div>
+            <div class="kpi-value">92%</div>
+            <div class="kpi-meta up">Qualité élevée</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-eyebrow"><div class="kpi-icon">⚡</div>Pièces en attente</div>
+            <div class="kpi-value" id="alertes-value">–</div>
+            <div class="kpi-meta warn">À revoir aujourd'hui</div>
+          </div>
+          <div class="kpi-card gold-card">
+            <div class="kpi-eyebrow"><div class="kpi-icon">◎</div>TVA à payer</div>
+            <div class="kpi-value" id="tva-value" style="font-size:22px">–</div>
+            <div class="kpi-meta" style="color:rgba(255,213,64,.6)">Période en cours</div>
+          </div>
+        </div>
+
+        <!-- Actions rapides -->
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Actions à faire</div>
+              <div class="card-sub">Corrigez, relancez ou exportez vos données</div>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-warn btn-sm" onclick="navigate('alertes')">Corriger les alertes</button>
+              <button class="btn btn-outline btn-sm" onclick="navigate('pieces')">Voir les pièces</button>
+              <button class="btn btn-green btn-sm" onclick="navigate('export')">Exporter →</button>
+              <button class="btn btn-outline btn-sm" onclick="navigate('tva')">Déclarer la TVA</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom:14px">
+          <div class="card">
+            <div class="card-header">
+              <div><div class="card-title">Activité mensuelle</div><div class="card-sub">Pièces traitées par semaine</div></div>
+              <span class="badge badge-green">Ce mois</span>
+            </div>
+            <div class="card-body"><canvas id="barPME" height="130"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div><div class="card-title">Répartition des charges</div><div class="card-sub">Par catégorie comptable</div></div>
+            </div>
+            <div class="card-body"><canvas id="piePME" height="130"></canvas></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div><div class="card-title">5 dernières pièces</div><div class="card-sub">Traitées par l'IA</div></div>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th>Pièce</th><th>Journal</th><th>Score</th><th>Statut</th></tr></thead>
+                <tbody id="pieces-table">
+                  <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--ink-500)"><span class="spinner"></span> Chargement...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Activités récentes</div></div>
+            <div class="card-body">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-dot">🧾</div>
+                  <div class="timeline-content"><div class="timeline-title">Déclaration TVA générée</div><div class="timeline-time">Aujourd'hui à 07:00</div></div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot">📤</div>
+                  <div class="timeline-content"><div class="timeline-title">Export Odoo disponible</div><div class="timeline-time">Aujourd'hui à 06:48</div></div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot">📄</div>
+                  <div class="timeline-content"><div class="timeline-title">Nouvelle facture importée</div><div class="timeline-time">Hier à 16:22</div></div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot">🤝</div>
+                  <div class="timeline-content"><div class="timeline-title">Cabinet invité avec succès</div><div class="timeline-time">Lundi</div></div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot">👤</div>
+                  <div class="timeline-content"><div class="timeline-title">Collaborateur lecture seule activé</div><div class="timeline-time">Lundi</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== PIÈCES ========== -->
+      <div class="page" id="page-pieces">
+        <div class="section-hd">
+          <div><div class="section-heading">Pièces comptables</div><div class="section-sub">Toutes les pièces importées — traitement IA automatique</div></div>
+          <button class="btn btn-green" id="upload-piece-btn-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Importer une pièce
+          </button>
+        </div>
+        <div class="upload-drop" id="upload-zone" style="margin-bottom:14px">
+          <div class="upload-drop-icon">📂</div>
+          <div class="upload-drop-title">Glissez un fichier ici ou cliquez pour importer</div>
+          <div class="upload-drop-sub">PDF ou image — Max 10 Mo · Traitement IA automatique après import</div>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Pièce</th><th>Type</th><th>Journal</th><th>Score IA</th><th>Statut</th><th>Écritures</th></tr></thead>
+              <tbody id="pieces-full-table">
+                <tr><td colspan="6" style="text-align:center;padding:20px;color:var(--ink-500)"><span class="spinner"></span> Chargement...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== IMPUTATIONS ========== -->
+      <div class="page" id="page-imputations">
+        <div class="section-hd">
+          <div><div class="section-heading">Imputations IA</div><div class="section-sub">Écritures générées automatiquement</div></div>
+          <span class="badge badge-green" id="imputations-count">– écritures</span>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Compte</th><th>Libellé</th><th>Débit (FCFA)</th><th>Crédit (FCFA)</th><th>Statut</th></tr></thead>
+              <tbody id="ecritures-table">
+                <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--ink-500)"><span class="spinner"></span> Chargement...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== ALERTES ========== -->
+      <div class="page" id="page-alertes">
+        <div class="section-hd">
+          <div><div class="section-heading">Alertes</div><div class="section-sub">Pièces nécessitant votre attention immédiate</div></div>
+          <span class="badge badge-warning" id="alertes-count">– alertes</span>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Pièce</th><th>Journal</th><th>Score IA</th><th>Statut</th><th>Action</th></tr></thead>
+              <tbody id="alertes-table">
+                <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--ink-500)"><span class="spinner"></span> Chargement...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== REPORTING ========== -->
+      <div class="page" id="page-reporting">
+        <div class="section-hd">
+          <div><div class="section-heading">Reporting</div><div class="section-sub">Synthèse financière depuis vos écritures</div></div>
+        </div>
+        <div class="grid-4" style="margin-bottom:14px">
+          <div class="kpi-card dark"><div class="kpi-eyebrow"><div class="kpi-icon">↑</div>Chiffre d'affaires</div><div class="kpi-value" id="rep-ca" style="font-size:22px">–</div><div class="kpi-meta">Comptes 7xxx</div></div>
+          <div class="kpi-card"><div class="kpi-eyebrow"><div class="kpi-icon">↓</div>Charges totales</div><div class="kpi-value" id="rep-charges" style="font-size:22px">–</div><div class="kpi-meta">Comptes 6xxx</div></div>
+          <div class="kpi-card"><div class="kpi-eyebrow"><div class="kpi-icon">◎</div>Résultat net</div><div class="kpi-value" id="rep-resultat" style="font-size:22px">–</div><div class="kpi-meta">CA − Charges</div></div>
+          <div class="kpi-card gold-card"><div class="kpi-eyebrow"><div class="kpi-icon">%</div>Taux de marge</div><div class="kpi-value" id="rep-marge">–</div><div class="kpi-meta" style="color:rgba(255,213,64,.6)">Sur CA</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Évolution mensuelle</div><div class="card-sub">Chiffre d'affaires sur 6 mois</div></div>
+          <div class="card-body"><canvas id="reportingChart" height="110"></canvas></div>
+        </div>
+      </div>
+
+      <!-- ========== TVA ========== -->
+      <div class="page" id="page-tva">
+        <div class="section-hd">
+          <div><div class="section-heading">TVA</div><div class="section-sub">Calcul automatique depuis vos écritures SYSCOHADA</div></div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <select id="tva-select-periode" class="form-input" style="width:160px;padding:8px 12px;font-size:13px" onchange="changerPeriodeTVA(this.value)">
+            </select>
+            <span class="badge badge-green" id="tva-periode">Période en cours</span>
+          </div>
+        </div>
+
+        <!-- KPIs TVA -->
+        <div class="grid-3" style="margin-bottom:14px">
+          <div class="kpi-card">
+            <div class="kpi-eyebrow"><div class="kpi-icon">↑</div>TVA collectée</div>
+            <div class="kpi-value" id="tva-collectee" style="font-size:24px">–</div>
+            <div class="kpi-meta">Comptes 44571 — ventes</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-eyebrow"><div class="kpi-icon">↓</div>TVA déductible</div>
+            <div class="kpi-value" id="tva-deductible" style="font-size:24px">–</div>
+            <div class="kpi-meta">Comptes 44551 — achats</div>
+          </div>
+          <div class="kpi-card dark">
+            <div class="kpi-eyebrow"><div class="kpi-icon">◎</div>TVA nette à payer</div>
+            <div class="kpi-value" id="tva-nette" style="font-size:24px">–</div>
+            <div class="kpi-meta" style="color:var(--gold)">Collectée − Déductible</div>
+          </div>
+        </div>
+
+        <!-- Bouton génération -->
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-body" style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:24px">
+            <div>
+              <div style="font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:4px">Générer la déclaration officielle</div>
+              <div style="font-size:13px;color:var(--ink-500)">Le document est prêt pour votre administration fiscale.</div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+              <div id="tva-file-link"></div>
+              <button class="btn btn-green" id="btn-generer-tva" onclick="generateTVA()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Générer la déclaration TVA
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Historique des déclarations -->
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">Historique des déclarations</div><div class="card-sub">Toutes vos déclarations TVA générées</div></div>
+            <span class="badge badge-green" id="tva-historique-count">–</span>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Période</th><th>TVA collectée</th><th>TVA déductible</th><th>TVA nette</th><th>Statut</th><th>Déclaration</th></tr></thead>
+              <tbody id="tva-historique-table">
+                <tr><td colspan="6" style="text-align:center;padding:20px;color:var(--ink-500)"><span class="spinner"></span> Chargement...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== EXPORT ========== -->
+      <div class="page" id="page-export">
+        <div class="section-hd">
+          <div><div class="section-heading">Export & ERP</div><div class="section-sub">Exportez vos écritures vers votre logiciel comptable</div></div>
+        </div>
+
+        <!-- Filtre période -->
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-body" style="padding:16px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+            <div style="font-size:13px;font-weight:700;color:var(--ink-700)">📅 Filtrer par période :</div>
+            <select id="export-select-periode" class="form-input" style="width:180px;padding:8px 12px;font-size:13px">
+            </select>
+            <div style="font-size:12px;color:var(--ink-500)">Laissez sur "Tout l'historique" pour exporter toutes les écritures</div>
+          </div>
+        </div>
+
+        <!-- Boutons export -->
+        <div class="grid-2" style="margin-bottom:14px">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Sage 100 Afrique</div>
+                <div class="card-sub">Format exact : JO;DA;CO;LI;MT;SE;NU;EC;DC</div>
+              </div>
+              <span style="font-size:36px">📗</span>
+            </div>
+            <div class="card-body" style="padding:20px 20px 24px">
+              <div style="font-size:12px;color:var(--ink-500);margin-bottom:14px;line-height:1.6">
+                Compatible Sage 100 · Dates au format JJMMAAAA · Devise XOF · BOM UTF-8 inclus
+              </div>
+              <button class="btn btn-green btn-full" id="export-sage-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Télécharger export Sage 100
+              </button>
+              <div style="font-size:12px;color:var(--success);margin-top:8px;font-weight:600;min-height:16px" id="export-sage-status"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Odoo 16 / 17</div>
+                <div class="card-sub">Format exact : date, journal, account, name, debit, credit</div>
+              </div>
+              <span style="font-size:36px">🟣</span>
+            </div>
+            <div class="card-body" style="padding:20px 20px 24px">
+              <div style="font-size:12px;color:var(--ink-500);margin-bottom:14px;line-height:1.6">
+                Compatible Odoo 16 et 17 · move_type déduit du journal · Devise XOF
+              </div>
+              <button class="btn btn-green btn-full" id="export-odoo-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Télécharger export Odoo
+              </button>
+              <div style="font-size:12px;color:var(--success);margin-top:8px;font-weight:600;min-height:16px" id="export-odoo-status"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Historique des exports -->
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">Historique des exports</div><div class="card-sub">Tous les exports générés</div></div>
+            <button class="btn btn-outline btn-sm" onclick="loadExportHistorique()">↺ Actualiser</button>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Format</th><th>Période</th><th>Date export</th><th>Statut</th></tr></thead>
+              <tbody id="export-historique-table">
+                <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--ink-500)">Aucun export généré</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== UTILISATEURS ========== -->
+      <div class="page" id="page-utilisateurs">
+        <div class="section-hd">
+          <div><div class="section-heading">Utilisateurs & accès</div><div class="section-sub">Gérez les droits de chaque membre</div></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-outline btn-sm" onclick="ouvrirModalInvitation('EXPERT')">🤝 Inviter un cabinet</button>
+            <button class="btn btn-green btn-sm" onclick="ouvrirModalInvitation('COLLABORATOR')">+ Inviter un collaborateur</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Utilisateur</th><th>Rôle</th><th>Statut</th><th>Droits</th><th>Action</th></tr></thead>
+              <tbody id="utilisateurs-table">
+                <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--ink-500)"><span class="spinner"></span> Chargement...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Invitations en attente -->
+        <div style="margin-top:14px">
+          <div class="card">
+            <div class="card-header">
+              <div><div class="card-title">Invitations envoyées</div><div class="card-sub">En attente d'acceptation</div></div>
+              <span class="badge badge-green" id="invitations-count">–</span>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th>Email</th><th>Rôle</th><th>Envoyée le</th><th>Expire le</th><th>Statut</th></tr></thead>
+                <tbody id="invitations-table">
+                  <tr><td colspan="5" style="text-align:center;padding:16px;color:var(--ink-500)">Aucune invitation</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== ABONNEMENT ========== -->
+      <div class="page" id="page-abonnement">
+        <div class="section-hd"><div><div class="section-heading">Mon abonnement</div><div class="section-sub">Gérez votre plan et votre facturation</div></div></div>
+        <div class="grid-2">
+          <div class="card" style="border:2px solid var(--forest-400)">
+            <div class="card-header">
+              <div>
+                <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--forest-500);margin-bottom:6px">✅ Plan actuel</div>
+                <div class="card-title" style="font-size:20px">PME Premium+</div>
+              </div>
+              <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--forest-600)">25 000 <span style="font-size:14px;font-weight:500;color:var(--ink-500)">FCFA HT/mois</span></div>
+            </div>
+            <div class="card-body">
+              <div style="font-size:13px;color:var(--ink-500);margin-bottom:16px">Renouvellement dans <strong style="color:var(--forest-700)">12 jours</strong></div>
+              <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+                <div style="display:flex;gap:10px"><span style="color:var(--success);font-weight:800">✓</span>Import illimité de pièces</div>
+                <div style="display:flex;gap:10px"><span style="color:var(--success);font-weight:800">✓</span>IA comptable activée</div>
+                <div style="display:flex;gap:10px"><span style="color:var(--success);font-weight:800">✓</span>2 collaborateurs inclus</div>
+                <div style="display:flex;gap:10px"><span style="color:var(--success);font-weight:800">✓</span>1 cabinet invité</div>
+                <div style="display:flex;gap:10px"><span style="color:var(--success);font-weight:800">✓</span>Export Sage / Odoo</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-500);margin-bottom:6px">🚀 Plan supérieur</div>
+                <div class="card-title" style="font-size:20px">Entreprise</div>
+              </div>
+              <div style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--ink-500)">Sur devis</div>
+            </div>
+            <div class="card-body">
+              <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;margin-bottom:20px">
+                <div style="display:flex;gap:10px"><span style="color:var(--forest-400);font-weight:800">✓</span>Tout le plan PME</div>
+                <div style="display:flex;gap:10px"><span style="color:var(--forest-400);font-weight:800">✓</span>Collaborateurs illimités</div>
+                <div style="display:flex;gap:10px"><span style="color:var(--forest-400);font-weight:800">✓</span>Multi-sociétés</div>
+                <div style="display:flex;gap:10px"><span style="color:var(--forest-400);font-weight:800">✓</span>Support dédié</div>
+                <div style="display:flex;gap:10px"><span style="color:var(--forest-400);font-weight:800">✓</span>API personnalisée</div>
+              </div>
+              <button class="btn btn-outline btn-full">Contacter l'équipe commerciale</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== PARAMÈTRES ========== -->
+      <div class="page" id="page-parametres">
+        <div class="section-hd"><div><div class="section-heading">Paramètres</div><div class="section-sub">Configurez votre espace H-Compta AI</div></div></div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Informations société</div></div>
+            <div class="card-body">
+              <div class="form-group"><label class="form-label">Nom de la société</label><input type="text" class="form-input" id="set-nom" value="CimenCI SARL"></div>
+              <div class="form-group"><label class="form-label">Pays</label><input type="text" class="form-input" value="Côte d'Ivoire" readonly style="background:var(--forest-50);color:var(--ink-500)"><div style="font-size:11px;color:var(--ink-500);margin-top:4px">Le pays ne peut être modifié que par l'administrateur.</div></div>
+              <div class="form-group"><label class="form-label">Taux TVA</label><input type="text" class="form-input" value="18%" readonly style="background:var(--forest-50);color:var(--ink-500)"></div>
+              <div class="form-group"><label class="form-label">Devise</label><input type="text" class="form-input" value="FCFA" readonly style="background:var(--forest-50);color:var(--ink-500)"></div>
+              <div style="display:flex;gap:10px;margin-top:4px">
+                <button class="btn btn-green" onclick="showToast('Modifications enregistrées', 'success')">Enregistrer</button>
+                <button class="btn btn-danger btn-sm" style="padding:9px 16px" onclick="doLogout()">↩ Déconnexion</button>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Notifications</div></div>
+            <div class="card-body">
+              <div class="toggle-row"><div><div class="toggle-label">Alertes pièces en attente</div><div class="toggle-sub">Email si une pièce reste non traitée</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="toggle-row"><div><div class="toggle-label">Rappel déclaration TVA</div><div class="toggle-sub">5 jours avant la date limite</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="toggle-row"><div><div class="toggle-label">Exports disponibles</div><div class="toggle-sub">Notifié quand un export est prêt</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+              <div class="toggle-row"><div><div class="toggle-label">Activité collaborateurs</div><div class="toggle-sub">Connexions et actions des membres</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page-content -->
+  </div><!-- /main-wrap -->
+<!-- ===== MODAL INVITATION ===== -->
+<div id="modal-invitation-overlay" style="display:none;position:fixed;inset:0;background:rgba(10,30,20,.6);backdrop-filter:blur(8px);z-index:800;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:var(--r-xl);width:100%;max-width:460px;box-shadow:var(--shadow-lg);overflow:hidden;animation:pageIn .2s ease-out">
+
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,var(--forest-800),var(--forest-600));padding:24px 28px 20px;display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:#fff" id="modal-inv-titre">Inviter un cabinet</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.55);margin-top:4px" id="modal-inv-sous">Le cabinet accèdera à votre dossier en lecture</div>
+      </div>
+      <button onclick="fermerModalInvitation()" style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.15);color:#fff;font-size:16px;display:grid;place-items:center;cursor:pointer">✕</button>
+    </div>
+
+    <!-- Corps -->
+    <div style="padding:24px 28px 28px">
+      <div class="form-group">
+        <label class="form-label">Email du <span id="modal-inv-role-label">cabinet expert-comptable</span></label>
+        <input type="email" class="form-input" id="inv-email" placeholder="cabinet@expertise.com">
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Message personnalisé (optionnel)</label>
+        <textarea class="form-input" id="inv-message" rows="3" placeholder="Bonjour, je vous invite à accéder à mon dossier H-Compta AI..." style="resize:none"></textarea>
+      </div>
+
+      <!-- Info rôle -->
+      <div id="modal-inv-info" style="margin-top:14px;padding:12px 14px;background:var(--forest-50);border-radius:var(--r-sm);border:1px solid rgba(46,130,105,.15);font-size:13px;color:var(--ink-700);line-height:1.6">
+        🤝 <strong>Cabinet expert</strong> — Accès lecture complète à vos pièces, écritures et TVA. Peut analyser et corriger les anomalies.
+      </div>
+
+      <div id="modal-inv-error" style="display:none;margin-top:12px;padding:10px 14px;background:var(--danger-soft);border-radius:var(--r-sm);font-size:13px;color:var(--danger)"></div>
+
+      <div style="display:flex;gap:10px;margin-top:20px">
+        <button class="btn btn-outline" style="flex:1" onclick="fermerModalInvitation()">Annuler</button>
+        <button class="btn btn-green" style="flex:2" id="btn-envoyer-invitation" onclick="envoyerInvitation()">
+          📧 Envoyer l'invitation
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL ÉCRITURES IA ===== -->
+<div id="modal-ecritures-overlay" style="display:none;position:fixed;inset:0;background:rgba(10,30,20,.6);backdrop-filter:blur(8px);z-index:800;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:var(--r-xl);width:100%;max-width:680px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-lg)">
+    <!-- Header modal -->
+    <div style="padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div style="font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--forest-900)" id="modal-piece-titre">Analyse IA</div>
+        <div style="font-size:12px;color:var(--ink-500);margin-top:3px" id="modal-piece-resume">–</div>
+      </div>
+      <button onclick="fermerModalEcritures()" style="width:32px;height:32px;border-radius:8px;background:var(--ink-100);color:var(--ink-700);font-size:16px;display:grid;place-items:center;cursor:pointer">✕</button>
+    </div>
+    <!-- KPIs analyse -->
+    <div id="modal-piece-kpis" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:16px 24px;background:var(--forest-50);border-bottom:1px solid var(--border)">
+      <div style="text-align:center">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-500);margin-bottom:4px">Type</div>
+        <div style="font-size:13px;font-weight:700;color:var(--forest-800)" id="modal-type-piece">–</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-500);margin-bottom:4px">Journal</div>
+        <div style="font-size:13px;font-weight:700;color:var(--forest-800)" id="modal-journal">–</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-500);margin-bottom:4px">Montant TTC</div>
+        <div style="font-size:13px;font-weight:700;color:var(--forest-800)" id="modal-montant">–</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-500);margin-bottom:4px">Score IA</div>
+        <div style="font-size:13px;font-weight:700" id="modal-score">–</div>
+      </div>
+    </div>
+    <!-- Corps — table écritures -->
+    <div style="overflow-y:auto;flex:1;padding:16px 24px 24px">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-500);margin-bottom:10px">Écritures SYSCOHADA générées</div>
+      <div class="table-wrap" id="modal-ecritures-wrap">
+        <div style="text-align:center;padding:24px;color:var(--ink-500)"><span class="spinner"></span> Chargement...</div>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:8px;justify-content:flex-end">
+        <button class="btn btn-outline btn-sm" onclick="fermerModalEcritures()">Fermer</button>
+        <button class="btn btn-green btn-sm" onclick="navigate('imputations');fermerModalEcritures()">Voir toutes les imputations →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PANEL TRAITEMENT EN COURS ===== -->
+<div id="panel-traitement" style="display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--forest-800);color:#fff;padding:14px 22px;border-radius:var(--r-md);box-shadow:var(--shadow-lg);z-index:900;display:none;align-items:center;gap:12px;font-size:13.5px;font-weight:600;min-width:320px">
+  <span class="spinner" style="border-top-color:#fff;border-color:rgba(255,255,255,.3);border-top-color:#fff"></span>
+  <span id="panel-traitement-msg">Analyse IA en cours...</span>
+  <div id="panel-traitement-progress" style="flex:1;height:4px;background:rgba(255,255,255,.2);border-radius:999px;overflow:hidden;margin-left:8px">
+    <div id="panel-traitement-bar" style="height:100%;background:var(--gold);border-radius:999px;width:0%;transition:width .4s"></div>
+  </div>
+</div>
+</div><!-- /layout -->
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const API_BASE = 'https://hcompta-backend.onrender.com';
+  var COMPANY_ID = '7098c39b-9961-4344-8bf1-f37919b35fd3'; // remplacé après connexion
+
+  var isLoggedIn = false;
+  var currentUser = null;
+
+  // ===== TOAST =====
+  function showToast(msg, type) {
+    var icons = { success:'✓ ', error:'✕ ', warn:'⚠ ' };
+    var t = document.getElementById('toast');
+    t.textContent = (icons[type] || '') + msg;
+    t.className = (type || '') + ' show';
+    setTimeout(function() { t.className = ''; }, 3500);
+  }
+
+  // ===== FORMAT =====
+  function fmt(n) {
+    if (n == null || n === '') return '–';
+    return Number(n).toLocaleString('fr-FR') + ' FCFA';
+  }
+
+  function statusBadge(status) {
+    // Vrais statuts Supabase : uploaded, processing, processed, error
+    var m = {
+      uploaded:   ['badge-warning', '⏳ Importé'],
+      processing: ['badge-warning', '🔄 En cours'],
+      processed:  ['badge-success', '✓ Traité'],
+      error:      ['badge-danger',  '✕ Erreur'],
+    };
+    var r = m[status] || ['badge-ghost', status || '–'];
+    return '<span class="badge ' + r[0] + '">' + r[1] + '</span>';
+  }
+
+  // ===== AUTH =====
+  async function doLogin() {
+    var email = document.getElementById('auth-email').value.trim();
+    var company = document.getElementById('auth-company').value.trim();
+    var errEl = document.getElementById('auth-error');
+    var spinner = document.getElementById('login-spinner');
+
+    if (!email || !email.includes('@')) { errEl.style.display = 'block'; errEl.textContent = 'Entrez un email valide.'; return; }
+    errEl.style.display = 'none';
+    spinner.style.display = 'inline-block';
+
+    try {
+      var res = await fetch(API_BASE + '/connexion', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ email: email })
+      });
+      var data = await res.json();
+      if (res.ok && data.success) {
+        // Vérifier que c'est bien un PME
+        if (data.role && !['PME_OWNER','COLLABORATOR'].includes(data.role)) {
+          errEl.style.display = 'block';
+          errEl.textContent = 'Cet email correspond à un espace ' + data.role + '. Utilisez le bon portail.';
+          spinner.style.display = 'none';
+          return;
+        }
+        currentUser = data;
+        if (data.company) COMPANY_ID = data.company.id;
+        loginSuccess();
+      } else {
+        errEl.style.display = 'block';
+        errEl.textContent = data.error || 'Email non reconnu.';
+      }
+    } catch(e) {
+      // Mode démo — accepter sans backend
+      currentUser = { email: email, full_name: company || 'CimenCI SARL', company: { company_name: company || 'CimenCI SARL', country: 'CI', vat_rate: 18, plan: 'pme', status: 'trial' } };
+      loginSuccess();
+    }
+    spinner.style.display = 'none';
+  }
+
+  function loginSuccess() {
+    document.getElementById('auth-modal').classList.remove('open');
+    isLoggedIn = true;
+
+    // Nom affiché
+    var nom = (currentUser.company && currentUser.company.company_name) || currentUser.full_name || currentUser.email;
+    var initial = nom.charAt(0).toUpperCase();
+    var pays = currentUser.company ? currentUser.company.country : 'CI';
+    var vatRate = currentUser.company ? currentUser.company.vat_rate : 18;
+    var plan = currentUser.company ? currentUser.company.plan : 'pme';
+
+    // Sidebar
+    document.getElementById('sidebar-user').style.display = 'flex';
+    document.getElementById('user-avatar-sidebar').textContent = initial;
+    document.getElementById('user-name-sidebar').textContent = nom;
+    var planLabel = { tpe: 'Plan TPE · 12 500 FCFA/mois', pme: 'Plan PME · 25 000 FCFA/mois', enterprise: 'Plan Entreprise' };
+    document.getElementById('user-plan-sidebar').textContent = planLabel[plan] || 'Plan PME';
+
+    // Topbar
+    document.getElementById('topbar-greeting').textContent = 'Bonjour, ' + nom + ' 👋';
+    document.getElementById('topbar-country').textContent = '🌍 ' + pays + ' · TVA ' + vatRate + '%';
+
+    // Mettre à jour l'abonnement dynamiquement
+    updateAbonnement(currentUser.company);
+
+    // Conn button
+    var btn = document.getElementById('conn-btn');
+    btn.className = 'conn-btn on';
+    document.getElementById('conn-dot').className = 'conn-dot on';
+    document.getElementById('conn-label').textContent = 'Connecté';
+
+    showToast('Bienvenue, ' + nom, 'success');
+    loadAll();
+  }
+
+  function updateAbonnement(company) {
+    if (!company) return;
+    var planNames = { tpe: 'TPE', pme: 'PME Premium+', enterprise: 'Entreprise' };
+    var planMontants = { tpe: '12 500', pme: '25 000', enterprise: 'Sur devis' };
+    var planEl = document.querySelector('#page-abonnement .card-title');
+    var montantEl = document.querySelector('#page-abonnement [style*="font-size:28px"]');
+    if (planEl) planEl.textContent = planNames[company.plan] || 'PME Premium+';
+    if (montantEl) montantEl.innerHTML = (planMontants[company.plan] || '25 000') + ' <span style="font-size:14px;font-weight:500;color:var(--ink-500)">FCFA HT/mois</span>';
+    // Jours restants d'essai
+    if (company.trial_end_date && company.status === 'trial') {
+      var diff = Math.ceil((new Date(company.trial_end_date) - new Date()) / (1000*60*60*24));
+      var renewEl = document.querySelector('#page-abonnement [style*="margin-bottom:16px"]');
+      if (renewEl && diff > 0) renewEl.innerHTML = 'Période d\'essai — <strong style="color:var(--forest-700)">' + diff + ' jours restants</strong>';
+    }
+  }
+
+  function doLogout() {
+    if (!confirm('Voulez-vous vous déconnecter ?')) return;
+    isLoggedIn = false;
+    currentUser = null;
+    document.getElementById('sidebar-user').style.display = 'none';
+    var btn = document.getElementById('conn-btn');
+    btn.className = 'conn-btn off';
+    document.getElementById('conn-dot').className = 'conn-dot off';
+    document.getElementById('conn-label').textContent = 'Se connecter';
+    document.getElementById('auth-modal').classList.add('open');
+    showToast('Vous êtes déconnecté', 'warn');
+  }
+
+  function toggleConn() {
+    if (isLoggedIn) doLogout();
+    else document.getElementById('auth-modal').classList.add('open');
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && document.getElementById('auth-modal').classList.contains('open')) doLogin();
+  });
+
+  // ===== NAVIGATION =====
+  function navigate(page) {
+    document.querySelectorAll('.nav-item[data-page]').forEach(function(n) { n.classList.remove('active'); });
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    var nav = document.querySelector('.nav-item[data-page="' + page + '"]');
+    if (nav) nav.classList.add('active');
+    var pageEl = document.getElementById('page-' + page);
+    if (pageEl) pageEl.classList.add('active');
+    var loaders = {
+      pieces:      loadPiecesFull,
+      alertes:     loadAlertes,
+      imputations: loadEcritures,
+      tva:         function() {
+        genererOptionsMois('tva-select-periode', false);
+        loadTVADetail();
+      },
+      reporting:      loadReporting,
+      utilisateurs:   loadUtilisateurs,
+      export:         function() {
+        genererOptionsMois('export-select-periode', true);
+        loadExportHistorique();
+      },
+    };
+    if (loaders[page]) loaders[page]();
+  }
+
+  function setupNav() {
+    document.querySelectorAll('.nav-item[data-page]').forEach(function(el) {
+      el.addEventListener('click', function() { navigate(el.dataset.page); });
+    });
+  }
+
+  // ===== DATA LOADERS =====
+  async function loadAll() {
+    await Promise.all([loadStats(), loadPieces(), loadNotifications()]);
+  }
+
+  async function loadStats() {
+    try {
+      var res = await fetch(API_BASE + '/stats/' + COMPANY_ID);
+      var d = await res.json();
+      var set = function(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; };
+      set('factures', d.total_factures ?? '–');
+      set('alertes-value', d.alertes ?? '–');
+      set('tva-value', d.tva ? fmt(d.tva) : '–');
+      var ba = document.getElementById('badge-alertes');
+      var bp = document.getElementById('badge-pieces');
+      if (ba) ba.textContent = d.alertes ?? '–';
+      if (bp) bp.textContent = d.total_factures ?? '–';
+    } catch(e) {}
+  }
+
+  async function loadPieces() {
+    var table = document.getElementById('pieces-table');
+    try {
+      var res = await fetch(API_BASE + '/pieces/recent/' + COMPANY_ID);
+      var data = await res.json();
+      if (!data || !data.length) { table.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--ink-500)">Aucune pièce trouvée</td></tr>'; return; }
+      table.innerHTML = data.map(function(p) {
+        return '<tr><td><strong style="color:var(--forest-800)">📄 ' + (p.file_name||'–') + '</strong></td>' +
+          '<td><span class="badge badge-green" style="font-size:11px">' + (p.journal||'–') + '</span></td>' +
+          '<td>' + (p.score_confiance!=null?p.score_confiance:'–') + '%</td>' +
+          '<td>' + statusBadge(p.status) + '</td></tr>';
+      }).join('');
+    } catch(e) { table.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--ink-500)">Erreur de chargement</td></tr>'; }
+  }
+
+  async function loadPiecesFull() {
+    var table = document.getElementById('pieces-full-table');
+    if (!table) return;
+    table.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--ink-500)"><span class="spinner"></span> Chargement...</td></tr>';
+    try {
+      var res = await fetch(API_BASE + '/pieces/all/' + COMPANY_ID);
+      var data = await res.json();
+      if (!data || !data.length) {
+        table.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">Aucune pièce importée</div><div class="empty-desc">Importez votre première pièce pour commencer</div></div></td></tr>';
+        return;
+      }
+
+        var enAttente = data.filter(function(p) { return p.status === 'uploaded'; }).length;
+
+      table.innerHTML = data.map(function(p) {
+        var typeLabel = {
+          facture_achat: '🛒 Achat', facture_vente: '💰 Vente',
+          releve_bancaire: '🏦 Banque', recu: '🧾 Reçu', autre: '📎 Autre'
+        }[p.type_piece] || '–';
+
+        var scoreColor = p.score_confiance >= 85 ? 'color:var(--success)'
+          : p.score_confiance >= 65 ? 'color:var(--warning)'
+          : p.score_confiance ? 'color:var(--danger)' : 'color:var(--ink-500)';
+
+        // Colonne Écritures — uniquement "Voir" si traitée, sinon statut IA
+        var ecrituresBtn = '';
+        if (p.status === 'processed') {
+          ecrituresBtn = '<button class="btn btn-outline btn-sm" onclick="voirEcritures(\'' + p.id + '\',\'' + (p.file_name||'').replace(/'/g,"\\'") + '\')">'
+            + '📋 Voir</button>';
+        } else if (p.status === 'processing') {
+          ecrituresBtn = '<span style="font-size:12px;color:var(--ink-500)"><span class="spinner" style="width:11px;height:11px"></span> IA en cours...</span>';
+        } else if (p.status === 'uploaded') {
+          ecrituresBtn = '<span style="font-size:12px;color:var(--ink-500)">En attente IA</span>';
+        } else if (p.status === 'error') {
+          ecrituresBtn = '<span style="font-size:12px;color:var(--danger)">⚠ Erreur IA</span>';
+        }
+
+        return '<tr>' +
+          '<td><strong style="color:var(--forest-800)">📄 ' + (p.file_name||'–') + '</strong>' +
+          '<div style="font-size:11px;color:var(--ink-500);margin-top:2px">' + (p.uploaded_at ? new Date(p.uploaded_at).toLocaleDateString('fr-FR') : '') + '</div></td>' +
+          '<td><span style="font-size:12px">' + typeLabel + '</span></td>' +
+          '<td>' + (p.journal ? '<span class="badge badge-green" style="font-size:11px">' + p.journal + '</span>' : '<span style="color:var(--ink-500);font-size:12px">–</span>') + '</td>' +
+          '<td><span style="font-weight:700;font-size:13px;' + scoreColor + '">' + (p.score_confiance != null ? p.score_confiance + '%' : '–') + '</span></td>' +
+          '<td>' + statusBadge(p.status) + '</td>' +
+          '<td>' + ecrituresBtn + '</td></tr>';
+      }).join('');
+
+      var bp = document.getElementById('badge-pieces');
+      if (bp) bp.textContent = data.length;
+    } catch(e) {
+      table.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--ink-500)">Erreur de chargement</td></tr>';
+    }
+  }
+
+  async function loadAlertes() {
+    var table = document.getElementById('alertes-table');
+    var count = document.getElementById('alertes-count');
+    if (!table) return;
+    table.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--ink-500)"><span class="spinner"></span> Chargement...</td></tr>';
+    try {
+      var res = await fetch(API_BASE + '/pieces/all/' + COMPANY_ID);
+      var data = await res.json();
+      var al = (data||[]).filter(function(p) { return ['uploaded','processing','error'].indexOf(p.status) !== -1; });
+      if (count) count.textContent = al.length + ' alerte' + (al.length > 1 ? 's' : '');
+      var ba = document.getElementById('badge-alertes');
+      if (ba) ba.textContent = al.length;
+      if (!al.length) {
+        table.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">✅</div><div class="empty-title">Aucune alerte</div><div class="empty-desc">Toutes les pièces sont traitées</div></div></td></tr>';
+        return;
+      }
+      table.innerHTML = al.map(function(p) {
+        // PME voit uniquement le statut — pas de bouton de réanalyse (réservé au cabinet)
+        var info = p.status === 'error'
+          ? '<span style="font-size:12px;color:var(--danger)">⚠ Contacter votre cabinet</span>'
+          : '<span style="font-size:12px;color:var(--ink-500)">Traitement en cours...</span>';
+        return '<tr>' +
+          '<td><strong>📄 ' + (p.file_name||'–') + '</strong></td>' +
+          '<td>' + (p.journal ? '<span class="badge badge-green" style="font-size:11px">' + p.journal + '</span>' : '–') + '</td>' +
+          '<td>' + (p.score_confiance != null ? p.score_confiance + '%' : '–') + '</td>' +
+          '<td>' + statusBadge(p.status) + '</td>' +
+          '<td>' + info + '</td></tr>';
+      }).join('');
+    } catch(e) {
+      table.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--ink-500)">Erreur</td></tr>';
+    }
+  }
+
+  // ===== TRAITEMENT IA — PIÈCE INDIVIDUELLE =====
+  async function traiterPiece(pieceId, fileName) {
+    // Mettre à jour l'UI immédiatement
+    showToast('Analyse IA en cours pour ' + (fileName || 'la pièce') + '...', 'success');
+    afficherPanelTraitement('Analyse IA : ' + (fileName || 'pièce') + '...', 10);
+
+    // Rafraîchir le bouton dans le tableau
+    refreshBoutonPiece(pieceId, 'processing');
+
+    try {
+      var res = await fetch(API_BASE + '/api/traitement/piece/' + pieceId, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      var data = await res.json();
+
+      cacherPanelTraitement();
+
+      if (res.ok && data.success) {
+        showToast('✓ ' + (fileName || 'Pièce') + ' analysée — ' + (data.ecritures_count || 0) + ' écriture(s) générée(s)', 'success');
+        // Recharger les pièces et stats
+        await Promise.all([loadPiecesFull(), loadStats(), loadPieces()]);
+        // Ouvrir automatiquement le modal des écritures
+        if (data.ecritures && data.ecritures.length > 0) {
+          afficherModalEcritures(pieceId, fileName, data.analyse, data.ecritures);
+        }
+      } else if (res.status === 409) {
+        showToast('Cette pièce est déjà traitée', 'warn');
+        await loadPiecesFull();
+      } else {
+        showToast('Erreur : ' + (data.error || 'Analyse impossible'), 'error');
+        refreshBoutonPiece(pieceId, 'error');
+      }
+    } catch(e) {
+      cacherPanelTraitement();
+      showToast('Erreur réseau lors de l\'analyse', 'error');
+      refreshBoutonPiece(pieceId, 'error');
+    }
+  }
+
+  // ===== TRAITEMENT BATCH — toutes les pièces en attente =====
+  async function lancerBatch() {
+    var btn = document.getElementById('btn-batch');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner" style="width:12px;height:12px;border-top-color:#fff"></span> Traitement en cours...'; }
+    afficherPanelTraitement('Traitement en lot : pièces en attente...', 5);
+
+    try {
+      var res = await fetch(API_BASE + '/api/traitement/batch/' + COMPANY_ID, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }
+      });
+      var data = await res.json();
+      var nb = data.traites || 0;
+
+      if (nb === 0) {
+        showToast('Aucune pièce en attente', 'warn');
+        cacherPanelTraitement();
+        return;
+      }
+
+      showToast('✓ ' + nb + ' pièce(s) envoyée(s) à l\'IA', 'success');
+
+      // Polling : vérifier toutes les 4s l'avancement (max 3 min)
+      var tentatives = 0;
+      var maxTentatives = 45;
+      var pieceIds = data.piece_ids || [];
+
+      var poll = setInterval(async function() {
+        tentatives++;
+        var progress = Math.min(95, 5 + (tentatives / maxTentatives) * 90);
+        afficherPanelTraitement('Analyse en cours (' + tentatives + '/' + maxTentatives + ')...', progress);
+
+        // Vérifier si toutes les pièces sont traitées
+        try {
+          var r2 = await fetch(API_BASE + '/pieces/all/' + COMPANY_ID);
+          var pieces = await r2.json();
+          var encours = (pieces || []).filter(function(p) { return p.status === 'processing' || p.status === 'uploaded'; });
+
+          if (encours.length === 0 || tentatives >= maxTentatives) {
+            clearInterval(poll);
+            cacherPanelTraitement();
+            await Promise.all([loadPiecesFull(), loadStats(), loadPieces()]);
+            showToast('✓ Traitement terminé !', 'success');
+            if (btn) { btn.disabled = false; btn.innerHTML = '✦ Toutes les pièces sont traitées'; }
+          }
+        } catch(e2) {}
+
+        if (tentatives >= maxTentatives) clearInterval(poll);
+      }, 4000);
+
+    } catch(e) {
+      cacherPanelTraitement();
+      showToast('Erreur lors du lancement du traitement', 'error');
+      if (btn) { btn.disabled = false; btn.textContent = '✦ Traiter toutes les pièces en attente'; }
+    }
+  }
+
+  // ===== MODAL ÉCRITURES =====
+  async function voirEcritures(pieceId, fileName) {
+    ouvrirModalEcritures();
+    document.getElementById('modal-piece-titre').textContent = '📄 ' + (fileName || 'Pièce');
+    document.getElementById('modal-piece-resume').textContent = 'Chargement des écritures...';
+    document.getElementById('modal-ecritures-wrap').innerHTML = '<div style="text-align:center;padding:24px;color:var(--ink-500)"><span class="spinner"></span> Chargement...</div>';
+
+    try {
+      var res = await fetch(API_BASE + '/api/traitement/status/' + pieceId);
+      var data = await res.json();
+      afficherModalEcritures(pieceId, fileName, data.piece, data.ecritures || []);
+    } catch(e) {
+      document.getElementById('modal-ecritures-wrap').innerHTML = '<div style="text-align:center;padding:24px;color:var(--ink-500)">Erreur de chargement</div>';
+    }
+  }
+
+  function afficherModalEcritures(pieceId, fileName, analyse, ecritures) {
+    ouvrirModalEcritures();
+    document.getElementById('modal-piece-titre').textContent = '📄 ' + (fileName || 'Pièce analysée');
+    document.getElementById('modal-piece-resume').textContent = (analyse && analyse.resume) ? analyse.resume : 'Écritures SYSCOHADA générées par l\'IA';
+
+    // KPIs
+    var typeLabels = { facture_achat:'Facture achat', facture_vente:'Facture vente', releve_bancaire:'Relevé bancaire', recu:'Reçu', autre:'Autre' };
+    document.getElementById('modal-type-piece').textContent = typeLabels[analyse && analyse.type_piece] || (analyse && analyse.type_piece) || '–';
+    document.getElementById('modal-journal').textContent = (analyse && analyse.journal) || '–';
+    document.getElementById('modal-montant').textContent = (analyse && analyse.montant_ttc) ? Number(analyse.montant_ttc).toLocaleString('fr-FR') + ' FCFA' : '–';
+    var score = (analyse && (analyse.score_confiance || analyse.score)) || null;
+    var scoreEl = document.getElementById('modal-score');
+    if (score) {
+      scoreEl.textContent = score + '%';
+      scoreEl.style.color = score >= 85 ? 'var(--success)' : score >= 65 ? 'var(--warning)' : 'var(--danger)';
+    } else {
+      scoreEl.textContent = '–';
+    }
+
+    // Table écritures
+    if (!ecritures || !ecritures.length) {
+      document.getElementById('modal-ecritures-wrap').innerHTML = '<div style="text-align:center;padding:24px;color:var(--ink-500)">Aucune écriture générée</div>';
+      return;
+    }
+
+    var totalDebit  = ecritures.reduce(function(s, e) { return s + Number(e.debit  || 0); }, 0);
+    var totalCredit = ecritures.reduce(function(s, e) { return s + Number(e.credit || 0); }, 0);
+    var equilibre   = Math.abs(totalDebit - totalCredit) < 1;
+
+    document.getElementById('modal-ecritures-wrap').innerHTML =
+      '<table class="data-table">' +
+      '<thead><tr><th>Compte</th><th>Libellé</th><th>Débit</th><th>Crédit</th></tr></thead>' +
+      '<tbody>' +
+      ecritures.map(function(e) {
+        return '<tr>' +
+          '<td><code style="font-size:12px;background:var(--forest-50);padding:2px 7px;border-radius:5px;font-weight:700">' + (e.compte || '–') + '</code></td>' +
+          '<td style="font-size:13px">' + (e.libelle || '–') + '</td>' +
+          '<td style="font-weight:700;color:' + (Number(e.debit) > 0 ? 'var(--forest-700)' : 'var(--ink-300)') + '">' + (Number(e.debit) > 0 ? Number(e.debit).toLocaleString('fr-FR') : '–') + '</td>' +
+          '<td style="font-weight:700;color:' + (Number(e.credit) > 0 ? 'var(--danger)' : 'var(--ink-300)') + '">' + (Number(e.credit) > 0 ? Number(e.credit).toLocaleString('fr-FR') : '–') + '</td>' +
+          '</tr>';
+      }).join('') +
+      '<tr style="background:var(--forest-50);font-weight:800">' +
+      '<td colspan="2" style="font-size:12px;text-transform:uppercase;letter-spacing:.05em">Total' +
+      (equilibre ? ' <span style="color:var(--success);margin-left:8px">✓ Équilibré</span>' : ' <span style="color:var(--danger);margin-left:8px">⚠ Déséquilibre</span>') + '</td>' +
+      '<td style="font-weight:900">' + totalDebit.toLocaleString('fr-FR') + '</td>' +
+      '<td style="font-weight:900">' + totalCredit.toLocaleString('fr-FR') + '</td>' +
+      '</tr>' +
+      '</tbody></table>';
+  }
+
+  function ouvrirModalEcritures() {
+    var o = document.getElementById('modal-ecritures-overlay');
+    o.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function fermerModalEcritures() {
+    var o = document.getElementById('modal-ecritures-overlay');
+    o.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  // Fermer en cliquant dehors
+  document.getElementById('modal-ecritures-overlay').addEventListener('click', function(e) {
+    if (e.target === this) fermerModalEcritures();
+  });
+
+  // ===== PANEL TRAITEMENT PROGRESS =====
+  function afficherPanelTraitement(msg, progress) {
+    var panel = document.getElementById('panel-traitement');
+    panel.style.display = 'flex';
+    document.getElementById('panel-traitement-msg').textContent = msg || 'Traitement en cours...';
+    document.getElementById('panel-traitement-bar').style.width = (progress || 0) + '%';
+  }
+  function cacherPanelTraitement() {
+    document.getElementById('panel-traitement').style.display = 'none';
+  }
+
+  // ===== RAFRAICHIR BOUTON PIECE dans le tableau =====
+  function refreshBoutonPiece(pieceId, newStatus) {
+    // Mettre à jour visuellement sans recharger tout le tableau
+    var rows = document.querySelectorAll('#pieces-full-table tr');
+    rows.forEach(function(row) {
+      if (row.innerHTML.includes(pieceId)) {
+        var lastTd = row.querySelector('td:last-child');
+        if (lastTd) {
+          if (newStatus === 'processing') {
+            lastTd.innerHTML = '<button class="btn btn-outline btn-sm" disabled style="opacity:.6"><span class="spinner" style="width:12px;height:12px"></span> En cours...</button>';
+          } else if (newStatus === 'error') {
+            lastTd.innerHTML = '<button class="btn btn-warn btn-sm" onclick="traiterPiece(\'' + pieceId + '\',\'Pièce\')">↺ Réanalyser</button>';
+          }
+        }
+      }
+    });
+  }
+
+  async function loadEcritures() {
+    var table = document.getElementById('ecritures-table');
+    var count = document.getElementById('imputations-count');
+    if (!table) return;
+    table.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--ink-500)"><span class="spinner"></span> Chargement...</td></tr>';
+    try {
+      var res = await fetch(API_BASE + '/api/export/sage/' + COMPANY_ID);
+      var text = await res.text();
+      var lines = text.split('\n').slice(1).filter(function(l) { return l.trim(); });
+      if (count) count.textContent = lines.length + ' écriture' + (lines.length>1?'s':'');
+      var bi = document.getElementById('badge-imputations');
+      if (bi) bi.textContent = lines.length;
+      if (!lines.length) { table.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">Aucune écriture</div></div></td></tr>'; return; }
+      table.innerHTML = lines.map(function(line) {
+        var c = line.split(';');
+        return '<tr><td><code style="font-size:12px;background:var(--forest-50);padding:2px 8px;border-radius:6px">' + (c[0]||'–') + '</code></td>' +
+          '<td>' + (c[1]||'–') + '</td>' +
+          '<td style="font-weight:600">' + (c[2]&&c[2]!=='0'?Number(c[2]).toLocaleString('fr-FR')+' FCFA':'–') + '</td>' +
+          '<td style="font-weight:600">' + (c[3]&&c[3]!=='0'?Number(c[3]).toLocaleString('fr-FR')+' FCFA':'–') + '</td>' +
+          '<td><span class="badge badge-success">Validé</span></td></tr>';
+      }).join('');
+    } catch(e) { table.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--ink-500)">Erreur</td></tr>'; }
+  }
+
+  async function loadTVADetail() {
+    // Lire la période sélectionnée
+    var sel = document.getElementById('tva-select-periode');
+    var periode = sel ? sel.value : new Date().toISOString().slice(0, 7);
+
+    try {
+      var url = API_BASE + '/api/tva/detail/' + COMPANY_ID + '?periode=' + periode;
+      var res = await fetch(url);
+      var d = await res.json();
+      var set = function(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; };
+      set('tva-collectee',  fmt(d.tva_collectee));
+      set('tva-deductible', fmt(d.tva_deductible));
+      set('tva-nette',      fmt(d.tva_nette));
+      set('tva-periode',    d.periode || periode);
+
+      // Si une déclaration existe déjà, afficher le lien de téléchargement
+      var linkEl = document.getElementById('tva-file-link');
+      if (linkEl) {
+        if (d.from_report && d.file_url) {
+          linkEl.innerHTML = '<a href="' + d.file_url + '" target="_blank" class="btn btn-outline btn-sm">📥 Télécharger déclaration</a>';
+        } else {
+          linkEl.innerHTML = '';
+        }
+      }
+    } catch(e) {}
+
+    // Charger aussi l'historique
+    await loadTVAHistorique();
+  }
+
+  // Générer les 12 derniers mois pour le sélecteur
+  function genererOptionsMois(selectId, avecTout) {
+    var sel = document.getElementById(selectId);
+    if (!sel) return;
+    sel.innerHTML = '';
+    if (avecTout) {
+      var opt = document.createElement('option');
+      opt.value = ''; opt.textContent = 'Tout l\'historique';
+      sel.appendChild(opt);
+    }
+    var now = new Date();
+    for (var i = 0; i < 12; i++) {
+      var d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      var val = d.toISOString().slice(0, 7);
+      var label = d.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+      label = label.charAt(0).toUpperCase() + label.slice(1);
+      var opt = document.createElement('option');
+      opt.value = val;
+      opt.textContent = label;
+      if (i === 0) opt.selected = true;
+      sel.appendChild(opt);
+    }
+  }
+
+  function changerPeriodeTVA(periode) {
+    loadTVADetail();
+  }
+
+  async function loadTVAHistorique() {
+    var tbody = document.getElementById('tva-historique-table');
+    var count = document.getElementById('tva-historique-count');
+    if (!tbody) return;
+    try {
+      var res = await fetch(API_BASE + '/api/tva/historique/' + COMPANY_ID);
+      var data = await res.json();
+      if (count) count.textContent = (data || []).length + ' déclaration(s)';
+      if (!data || !data.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--ink-500)">Aucune déclaration générée</td></tr>';
+        return;
+      }
+      tbody.innerHTML = data.map(function(r) {
+        // Formater la période "2026-03" en "Mars 2026"
+        var moisLabel = r.period;
+        try {
+          var parts = r.period.split('-');
+          var d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, 1);
+          moisLabel = d.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+          moisLabel = moisLabel.charAt(0).toUpperCase() + moisLabel.slice(1);
+        } catch(e2) {}
+        var lienDl = r.file_url
+          ? '<a href="' + r.file_url + '" target="_blank" class="btn btn-outline btn-sm">📥 Télécharger</a>'
+          : '<span style="font-size:12px;color:var(--ink-500)">Non disponible</span>';
+        return '<tr>' +
+          '<td><strong>' + moisLabel + '</strong></td>' +
+          '<td>' + fmt(r.tva_collectee) + '</td>' +
+          '<td>' + fmt(r.tva_deductible) + '</td>' +
+          '<td style="font-weight:700;color:var(--forest-700)">' + fmt(r.tva_nette) + '</td>' +
+          '<td><span class="badge badge-success">Générée</span></td>' +
+          '<td>' + lienDl + '</td></tr>';
+      }).join('');
+    } catch(e) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--ink-500)">Erreur</td></tr>';
+    }
+  }
+
+  async function loadReporting() {
+    try {
+      var res = await fetch(API_BASE + '/reporting/' + COMPANY_ID);
+      var d = await res.json();
+      var set = function(id,v) { var el=document.getElementById(id); if(el) el.textContent=v; };
+      set('rep-ca', fmt(d.ca)); set('rep-charges', fmt(d.charges));
+      set('rep-resultat', fmt(d.resultat)); set('rep-marge', (d.taux_marge??'–')+'%');
+    } catch(e) {}
+    var ctx = document.getElementById('reportingChart');
+    if (ctx && !ctx.dataset.init) {
+      ctx.dataset.init = '1';
+      new Chart(ctx, {
+        type: 'line',
+        data: { labels: ['Jan','Fév','Mar','Avr','Mai','Jun'],
+          datasets: [{ data: [1200000,1450000,1100000,1800000,1600000,2100000], borderColor: '#2E8269', backgroundColor: 'rgba(46,130,105,.08)', tension: .4, fill: true, pointRadius: 5, pointBackgroundColor: '#fff', pointBorderColor: '#2E8269', pointBorderWidth: 2 }] },
+        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false, grid: { color: '#EDF3EF' }, ticks: { font: { size: 11 }, color: '#5C7269' } }, x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#5C7269' } } } }
+      });
+    }
+  }
+
+  // ===== INVITATION CABINET / COLLABORATEUR =====
+  var roleInvitation = 'EXPERT'; // rôle en cours d'invitation
+
+  function ouvrirModalInvitation(role) {
+    roleInvitation = role;
+    var overlay = document.getElementById('modal-invitation-overlay');
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    document.getElementById('inv-email').value = '';
+    document.getElementById('inv-message').value = '';
+    document.getElementById('modal-inv-error').style.display = 'none';
+
+    if (role === 'EXPERT') {
+      document.getElementById('modal-inv-titre').textContent = '🤝 Inviter un cabinet expert';
+      document.getElementById('modal-inv-sous').textContent = 'Le cabinet accèdera à votre dossier en lecture';
+      document.getElementById('modal-inv-role-label').textContent = 'cabinet expert-comptable';
+      document.getElementById('modal-inv-info').innerHTML = '🤝 <strong>Cabinet expert</strong> — Accès lecture complète à vos pièces, écritures et TVA. Peut analyser et corriger les anomalies.';
+    } else {
+      document.getElementById('modal-inv-titre').textContent = '👤 Inviter un collaborateur';
+      document.getElementById('modal-inv-sous').textContent = 'Le collaborateur accèdera en lecture à votre espace';
+      document.getElementById('modal-inv-role-label').textContent = 'collaborateur';
+      document.getElementById('modal-inv-info').innerHTML = '👤 <strong>Collaborateur</strong> — Accès lecture à vos pièces et rapports. Ne peut pas modifier ni exporter.';
+    }
+
+    setTimeout(function() { document.getElementById('inv-email').focus(); }, 100);
+  }
+
+  function fermerModalInvitation() {
+    document.getElementById('modal-invitation-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  async function envoyerInvitation() {
+    var email   = document.getElementById('inv-email').value.trim();
+    var errEl   = document.getElementById('modal-inv-error');
+    var btn     = document.getElementById('btn-envoyer-invitation');
+
+    errEl.style.display = 'none';
+
+    if (!email || !email.includes('@')) {
+      errEl.textContent = 'Entrez un email valide.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    btn.innerHTML = '<span class="spinner" style="width:13px;height:13px;border-top-color:#fff"></span> Envoi en cours...';
+    btn.disabled = true;
+
+    try {
+      // Calculer la date d'expiration (7 jours)
+      var expiry = new Date();
+      expiry.setDate(expiry.getDate() + 7);
+
+      var res = await fetch(API_BASE + '/invitations/envoyer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          company_id:  COMPANY_ID,
+          email:       email,
+          role:        roleInvitation,
+          invited_by:  currentUser ? currentUser.user_id : null,
+          expires_at:  expiry.toISOString(),
+          message:     document.getElementById('inv-message').value.trim() || null,
+        })
+      });
+
+      var data = await res.json();
+
+      if (res.ok && data.success) {
+        fermerModalInvitation();
+        showToast('✓ Invitation envoyée à ' + email, 'success');
+        await loadUtilisateurs(); // Rafraîchir la page
+      } else {
+        errEl.textContent = data.error || 'Erreur lors de l\'envoi de l\'invitation.';
+        errEl.style.display = 'block';
+      }
+    } catch(e) {
+      // Fallback démo — simuler l'invitation
+      fermerModalInvitation();
+      showToast('✓ Invitation envoyée à ' + email + ' (mode démo)', 'success');
+    }
+
+    btn.innerHTML = '📧 Envoyer l\'invitation';
+    btn.disabled = false;
+  }
+
+  // Fermer modal invitation en cliquant dehors
+  document.getElementById('modal-invitation-overlay').addEventListener('click', function(e) {
+    if (e.target === this) fermerModalInvitation();
+  });
+
+  // Touche Entrée dans le champ email
+  document.getElementById('inv-email').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') envoyerInvitation();
+  });
+
+  // ===== UTILISATEURS =====
+  async function loadUtilisateurs() {
+    var tbody = document.getElementById('utilisateurs-table');
+    if (!tbody) return;
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--ink-500)"><span class="spinner"></span> Chargement...</td></tr>';
+    try {
+      var res = await fetch(API_BASE + '/utilisateurs/' + COMPANY_ID);
+      var data = await res.json();
+      if (!data || !data.length) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--ink-500)">Aucun utilisateur trouvé</td></tr>';
+      } else {
+        var roleLabels = { OWNER: 'Compte principal', COLLABORATOR: 'Collaborateur', EXPERT: 'Cabinet comptable' };
+        var roleDesc   = { OWNER: 'Complet', COLLABORATOR: 'Lecture + commentaires', EXPERT: 'Interface Cabinet' };
+        tbody.innerHTML = data.map(function(cu) {
+          var u = cu.users || {};
+          var badgeCls    = cu.status === 'active' ? 'badge-success' : 'badge-ghost';
+          var statusLabel = cu.status === 'active' ? 'Actif' : 'Invité';
+          var action = cu.role_in_company === 'OWNER' ? '–'
+            : cu.role_in_company === 'EXPERT'
+            ? '<button class="btn btn-danger btn-sm" onclick="showToast(\'Révocation envoyée\',\'warn\')">Révoquer</button>'
+            : '<button class="btn btn-outline btn-sm">Modifier</button>';
+          return '<tr>' +
+            '<td><strong>' + (u.full_name || u.email || '–') + '</strong>' +
+            '<div style="font-size:11px;color:var(--ink-500)">' + (u.email || '') + '</div></td>' +
+            '<td>' + (roleLabels[cu.role_in_company] || cu.role_in_company) + '</td>' +
+            '<td><span class="badge ' + badgeCls + '">' + statusLabel + '</span></td>' +
+            '<td>' + (roleDesc[cu.role_in_company] || '–') + '</td>' +
+            '<td>' + action + '</td></tr>';
+        }).join('');
+      }
+    } catch(e) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--ink-500)">Erreur de chargement</td></tr>';
+    }
+    await loadInvitationsEnvoyees();
+  }
+
+  async function loadInvitationsEnvoyees() {
+    var tbody = document.getElementById('invitations-table');
+    var count = document.getElementById('invitations-count');
+    if (!tbody) return;
+    try {
+      var res = await fetch(API_BASE + '/invitations/' + COMPANY_ID);
+      var data = await res.json();
+      var pending = (data || []).filter(function(i) { return i.status === 'pending'; }).length;
+      if (count) count.textContent = pending + ' en attente';
+      if (!data || !data.length) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:16px;color:var(--ink-500)">Aucune invitation envoyée</td></tr>';
+        return;
+      }
+      var roleLabels = { EXPERT: '🤝 Cabinet', COLLABORATOR: '👤 Collaborateur' };
+      var statusMap  = { pending: ['badge-warning','En attente'], accepted: ['badge-success','Acceptée'], expired: ['badge-ghost','Expirée'] };
+      tbody.innerHTML = data.map(function(inv) {
+        var s = statusMap[inv.status] || ['badge-ghost', inv.status];
+        var dateEnvoi  = inv.created_at ? new Date(inv.created_at).toLocaleDateString('fr-FR') : '–';
+        var dateExpiry = inv.expires_at ? new Date(inv.expires_at).toLocaleDateString('fr-FR') : '–';
+        return '<tr><td><strong>' + (inv.email || '–') + '</strong></td>' +
+          '<td>' + (roleLabels[inv.role] || inv.role) + '</td>' +
+          '<td>' + dateEnvoi + '</td><td>' + dateExpiry + '</td>' +
+          '<td><span class="badge ' + s[0] + '">' + s[1] + '</span></td></tr>';
+      }).join('');
+    } catch(e) {
+      if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:16px;color:var(--ink-500)">–</td></tr>';
+    }
+  }
+
+  // ===== NOTIFICATIONS =====
+  async function loadNotifications() {
+    if (!currentUser || !currentUser.user_id) return;
+    try {
+      var res = await fetch(API_BASE + '/notifications/' + currentUser.user_id);
+      var data = await res.json();
+      if (data && data.length > 0) {
+        var dot = document.querySelector('.notif-dot');
+        if (dot) dot.style.display = 'block';
+      }
+    } catch(e) {}
+  }
+
+  // ===== GÉNÉRER TVA =====
+  async function generateTVA() {
+    var sel    = document.getElementById('tva-select-periode');
+    var periode = sel ? sel.value : new Date().toISOString().slice(0, 7);
+    var btn    = document.getElementById('btn-generer-tva');
+    try {
+      if (btn) { btn.innerHTML = '<span class="spinner" style="width:13px;height:13px;border-top-color:#fff"></span> Génération...'; btn.disabled = true; }
+      var res = await fetch(API_BASE + '/api/tva/generer/' + COMPANY_ID, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ periode })
+      });
+      var d = await res.json();
+      if (res.ok && d.success) {
+        showToast('✓ Déclaration TVA générée — ' + (d.mois || periode), 'success');
+        // Afficher le lien de téléchargement si fichier généré
+        if (d.file_url) {
+          var linkEl = document.getElementById('tva-file-link');
+          if (linkEl) linkEl.innerHTML = '<a href="' + d.file_url + '" target="_blank" class="btn btn-outline btn-sm">📥 Télécharger déclaration</a>';
+        }
+        await loadTVADetail();
+      } else {
+        showToast(d.error || 'Erreur lors de la génération', 'error');
+      }
+    } catch(e) {
+      showToast('Erreur réseau', 'error');
+    }
+    if (btn) {
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Générer la déclaration TVA';
+      btn.disabled = false;
+    }
+  }
+
+  // ===== UPLOAD =====
+  function setupUpload() {
+    var fileInput = document.getElementById('fileInput');
+    ['upload-piece-btn','upload-piece-btn-2','upload-zone'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('click', function(e) { e.stopPropagation(); fileInput.click(); });
+    });
+    fileInput.addEventListener('change', async function() {
+      var file = this.files[0]; if (!file) return;
+      if (file.size > 10*1024*1024) { showToast('Fichier trop lourd — max 10 Mo', 'error'); this.value=''; return; }
+      showToast('Import en cours...');
+      var fd = new FormData();
+      fd.append('company_id', COMPANY_ID);
+      fd.append('file', file);
+      if (currentUser && currentUser.user_id) fd.append('uploaded_by', currentUser.user_id);
+      try {
+        var res = await fetch(API_BASE + '/pieces/upload', { method: 'POST', body: fd });
+        var d = await res.json();
+        if (!res.ok) { showToast(d.error || 'Erreur inconnue', 'error'); return; }
+        showToast('Pièce importée — lancement de l\'analyse IA...', 'success');
+        await Promise.all([loadPieces(), loadStats(), loadPiecesFull()]);
+        this.value = '';
+        // Lancer automatiquement le traitement IA sur la pièce importée
+        if (d.piece && d.piece.id) {
+          setTimeout(function() { traiterPiece(d.piece.id, d.piece.file_name); }, 800);
+        }
+      } catch(e) { showToast('Erreur réseau lors de l\'upload', 'error'); }
+    });
+  }
+
+  // ===== EXPORTS =====
+  function setupExports() {
+    // Initialiser le sélecteur de période export
+    genererOptionsMois('export-select-periode', true);
+
+    var sb = document.getElementById('export-sage-btn');
+    var ob = document.getElementById('export-odoo-btn');
+
+    if (sb) sb.addEventListener('click', async function() {
+      var periode = document.getElementById('export-select-periode').value;
+      var s = document.getElementById('export-sage-status');
+      if (s) s.textContent = '⏳ Téléchargement en cours...';
+      var url = API_BASE + '/api/export/sage/' + COMPANY_ID;
+      if (periode) url += '?periode=' + periode + '&user_id=' + (currentUser && currentUser.user_id || '');
+      window.location.href = url;
+      setTimeout(async function() {
+        if (s) s.textContent = '✓ Fichier téléchargé !';
+        await loadExportHistorique();
+      }, 1500);
+    });
+
+    if (ob) ob.addEventListener('click', async function() {
+      var periode = document.getElementById('export-select-periode').value;
+      var s = document.getElementById('export-odoo-status');
+      if (s) s.textContent = '⏳ Téléchargement en cours...';
+      var url = API_BASE + '/api/export/odoo/' + COMPANY_ID;
+      if (periode) url += '?periode=' + periode + '&user_id=' + (currentUser && currentUser.user_id || '');
+      window.location.href = url;
+      setTimeout(async function() {
+        if (s) s.textContent = '✓ Fichier téléchargé !';
+        await loadExportHistorique();
+      }, 1500);
+    });
+  }
+
+  async function loadExportHistorique() {
+    var tbody = document.getElementById('export-historique-table');
+    if (!tbody) return;
+    try {
+      var res = await fetch(API_BASE + '/api/export/historique/' + COMPANY_ID);
+      var data = await res.json();
+      if (!data || !data.length) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--ink-500)">Aucun export généré</td></tr>';
+        return;
+      }
+      var formatLabels = { sage: '📗 Sage 100', odoo: '🟣 Odoo' };
+      tbody.innerHTML = data.map(function(e) {
+        var dateStr = e.created_at ? new Date(e.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '–';
+        var periodeLabel = e.period || '–';
+        try {
+          var parts = e.period.split('-');
+          var d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, 1);
+          periodeLabel = d.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+          periodeLabel = periodeLabel.charAt(0).toUpperCase() + periodeLabel.slice(1);
+        } catch(e2) {}
+        return '<tr>' +
+          '<td><strong>' + (formatLabels[e.format] || e.format) + '</strong></td>' +
+          '<td>' + periodeLabel + '</td>' +
+          '<td style="font-size:12px;color:var(--ink-500)">' + dateStr + '</td>' +
+          '<td><span class="badge badge-success">Généré</span></td></tr>';
+      }).join('');
+    } catch(e) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:16px;color:var(--ink-500)">–</td></tr>';
+    }
+  }
+
+  // ===== CHARTS =====
+  function initCharts() {
+    var ctxBar = document.getElementById('barPME');
+    if (ctxBar) new Chart(ctxBar, {
+      type: 'bar',
+      data: { labels: ['Sem. 1','Sem. 2','Sem. 3','Sem. 4'],
+        datasets: [{ data: [8,14,11,17], backgroundColor: ['#1A5C45','#2E8269','#3EA082','#98CBB5'], borderRadius: 10, borderSkipped: false }] },
+      options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#EDF3EF' }, ticks: { font:{size:11}, color:'#5C7269' } }, x: { grid: { display: false }, ticks: { font:{size:11}, color:'#5C7269' } } } }
+    });
+    var ctxPie = document.getElementById('piePME');
+    if (ctxPie) new Chart(ctxPie, {
+      type: 'doughnut',
+      data: { labels: ['Achats','Ventes','Banque','Autres'],
+        datasets: [{ data: [42,33,18,7], backgroundColor: ['#0D2B22','#2E8269','#98CBB5','#C5DED6'], borderWidth: 0 }] },
+        options: { plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font:{size:11}, color:'#5C7269', padding: 14 } } }, cutout: '68%' }
+    });
+  }
+
+  // ===== INIT =====
+  document.addEventListener('DOMContentLoaded', function() {
+    setupNav();
+    setupUpload();
+    setupExports();
+    initCharts();
+    setTimeout(function() {
+      var el = document.getElementById('auth-email');
+      if (el) el.focus();
+    }, 100);
+  });
+</script>
+</body>
+</html>
